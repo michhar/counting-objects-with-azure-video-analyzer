@@ -3,6 +3,14 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# User specified
+*.pb
+*.mp4
+*.MOV
+*.csv
+*.avi
+.DS_Store
+
 # C extensions
 *.so
 
