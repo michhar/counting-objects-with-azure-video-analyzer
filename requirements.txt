@@ -1,6 +1,6 @@
 dash==1.0.0
 gunicorn==19.9.0
-pillow==7.1.0
+Pillow~=8.2
 scipy==1.4.1
 numpy==1.18.5
 pandas==1.2.4
@@ -8,18 +8,11 @@ Flask==1.0.1
 dash-player==0.0.1
 
 # To create the video annots - TODO: migrate to onnx
-tensorflow~=2.3.0
+tensorflow~=2.4
 opencv-python~=4.5.2.52
 matplotlib==3.4.2
 
-# For azure media services uploading
-# azure-storage-blob==12.3.1
-# azure-mgmt-media==2.1.0
-# azure-mgmt-resource==9.0.0
-# adal~=1.2.2
-# msrestazure~=0.6.3
-
 # For AVA app
-certifi
-azure-iot-device
-azure-iot-hub
+certifi==2020.12.5
+azure-iot-device==2.7.0
+azure-iot-hub==2.4.0

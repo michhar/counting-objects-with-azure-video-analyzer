@@ -93,7 +93,7 @@
         }
     },
     "variables": {
-        "_artifactsLocation": "https://raw.githubusercontent.com/Azure/video-analyzer/main/setup/",
+        "_artifactsLocation": "https://raw.githubusercontent.com/michhar/counting-objects-with-azure-video-analyzer/deploy/arm_templates/",
         "managedIdentityName": "[concat(parameters('namePrefix'),'-deployment-identity-',uniqueString(parameters('resourceGroup')))]",
         "managedIdentityId": "[concat(subscription().id,'/resourceGroups/',parameters('resourceGroup'),'/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', variables('managedIdentityName'))]",
         "simulatedDeviceName": "[concat(parameters('namePrefix'),'-iot-edge-device')]",
