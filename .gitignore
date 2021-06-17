@@ -11,7 +11,7 @@ __pycache__/
 *.avi
 .DS_Store
 config/
-appsettings.json
+appsettings*
 # virtualenv
 .venv
 venv/

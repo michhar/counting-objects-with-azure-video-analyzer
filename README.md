@@ -3,12 +3,7 @@
 ## Prerequisites
 
 - Python 3.6+ (preferably an Anaconda release)
-
-## What gets deployed
-
-- Azure Video Analyzer account and dependent services (Storage, Media Services, etc.)
-- App Service (for web app)
-- IoT Hub
+- Percept DK
 
 ### Set up Azure resources
 
@@ -37,6 +32,21 @@ Example output from Percept DK:
 ```json
 
 ```
+
+## Troubleshooting
+
+* _The module cannot access the path /var/lib/videoanalyzer/AmsApplicationData specified in the 'applicationDataDirectory' desired property._ This may occur due to previous deployments of AVA where the application data directory was populated with files.  To refresh this directory you will need to stop the iotedge daemon, delete and then recreate the directory as follows.
+
+```
+sudo systemctl stop iotedge
+sudo rm -fr /var/lib/videoanalyzer/AmsApplicationData
+sudo mkdir /var/lib/videoanalyzer/AmsApplicationData
+sudo chown -R 1010:1010 /var/lib/videoanalyzer/
+sudo systemctl start iotedge
+```
+
+> Note:  for newer iotedge daemons you may need to replace `iotedge` with `aziot-edged`.
+
 
 ## Credits and References
 

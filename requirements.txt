@@ -7,10 +7,10 @@ pandas==1.2.4
 Flask==1.0.1
 dash-player==0.0.1
 
-# To create the video annots - TODO: migrate to onnx
-tensorflow~=2.4
-opencv-python~=4.5.2.52
-matplotlib==3.4.2
+# # To create the video annots - TODO: update web app to use IoT Hub messages
+# tensorflow~=2.4
+# opencv-python~=4.5.2.52
+# matplotlib==3.4.2
 
 # For AVA app
 certifi==2020.12.5

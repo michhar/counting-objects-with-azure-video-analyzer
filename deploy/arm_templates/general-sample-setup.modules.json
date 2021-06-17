@@ -64,16 +64,6 @@
                   "value": "1010"
                 }
               }
-            },
-            "rtspsim": {
-              "version": "1.0",
-              "type": "docker",
-              "status": "running",
-              "restartPolicy": "always",
-              "settings": {
-                "image": "mcr.microsoft.com/lva-utilities/rtspsim-live555:1.2",
-                "createOptions": "{ \"HostConfig\": { \"Binds\": [ \"$VIDEO_INPUT_FOLDER_ON_DEVICE:/live/mediaServer/media\" ] } }"
-              }
             }
           }
         }
@@ -82,7 +72,7 @@
         "properties.desired": {
           "schemaVersion": "1.0",
           "routes": {
-            "AVAToHub": "FROM /messages/modules/avaedge/outputs/* INTO $upstream"
+            "route": "FROM /messages/* INTO $upstream"
           },
           "storeAndForwardConfiguration": {
             "timeToLiveSecs": 7200
@@ -100,6 +90,16 @@
           "allowUnsecuredEndpoints": true,
           "telemetryOptOut": false
         }
+      },
+      "azureeyemodule": {
+          "properties.desired": {
+              "Logging": true,
+              "ModelZipUrl": "",
+              "RawStream": true,
+              "ResultStream": true,
+              "Running": true,
+              "TelemetryInterval": 10
+          }
       }
     }
   }

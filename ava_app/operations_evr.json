@@ -24,15 +24,15 @@
         {
             "opName": "pipelineTopologySet",
             "opParams": {
-                "pipelineTopologyUrl": "https://raw.githubusercontent.com/Azure/video-analyzer/main/pipelines/live/topologies/cvr-video-sink/topology.json"
+                "pipelineTopologyUrl": "https://raw.githubusercontent.com/Azure/video-analyzer/main/pipelines/live/topologies/evr-motion-video-sink/topology.json"
             }
         },
         {
             "opName": "livePipelineSet",
             "opParams": {
-                "name": "Sample-Pipeline-2",
+                "name": "Sample-Pipeline-1",
                 "properties": {
-                    "topologyName": "CVRToVideoSink",
+                    "topologyName": "EVRtoVideoSinkOnMotionDetection",
                     "description": "Sample pipeline description",
                     "parameters": [
                         {
@@ -54,7 +54,7 @@
         {
             "opName": "livePipelineActivate",
             "opParams": {
-                "name": "Sample-Pipeline-2"
+                "name": "Sample-Pipeline-1"
             }
         },
         {
@@ -70,13 +70,13 @@
         {
             "opName": "livePipelineDeactivate",
             "opParams": {
-                "name": "Sample-Pipeline-2"
+                "name": "Sample-Pipeline-1"
             }
         },
         {
             "opName": "livePipelineDelete",
             "opParams": {
-                "name": "Sample-Pipeline-2"
+                "name": "Sample-Pipeline-1"
             }
         },
         {
@@ -92,7 +92,7 @@
         {
             "opName": "pipelineTopologyDelete",
             "opParams": {
-                "name": "CVRToVideoSink"
+                "name": "EVRtoVideoSinkOnMotionDetection"
             }
         },
         {
