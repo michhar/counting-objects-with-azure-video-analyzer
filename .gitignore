@@ -10,6 +10,18 @@ __pycache__/
 *.csv
 *.avi
 .DS_Store
+config/
+appsettings.json
+# virtualenv
+.venv
+venv/
+
+# Added
+unused/
+vv
+.DS_Store
+pyvenv.cfg
+.vscode/
 
 # C extensions
 *.so
