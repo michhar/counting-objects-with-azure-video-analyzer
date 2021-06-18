@@ -20,27 +20,6 @@
                 "description": "This template supports a set of scenarios with different configurations. For details on the scenarios please see the documentation."
             }
         },
-        "simulatedEdgeDeviceAdminUsername": {
-            "metadata": {
-                "description": "The username for accesing the VM acting as the edge device."
-            },
-            "defaultValue": "avaadmin",
-            "type": "string"
-        },
-        "simulatedEdgeDeviceAdminPassword": {
-            "type": "securestring",
-            "metadata": {
-                "description": "The password for accesing the VM acting as the edge device.",
-                "todo": "Provide an option to use SSH, this is already present in the linked template."
-            }
-        },
-        "useBastionHost": {
-            "metadata": {
-                "description": "If true, the template will deploy a bastion host for connecting to the simulated edge device."
-            },
-            "defaultValue": false,
-            "type": "bool"
-        },
         "useExistingEdgeDevice": {
             "metadata": {
                 "description": "If true, this deployment will override the modules that are currently deployed on the specified device."
@@ -410,44 +389,6 @@
                             "type": "string",
                             "value": "We added the `scriptOutputs` as a workaround. For an unknown reason, we could not access the `deviceConnectionString` directly."
                         }
-                    }
-                }
-            }
-        },
-        {
-            "condition": "[not(parameters('useExistingEdgeDevice'))]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
-            "name": "deploy-simulated-edge-device",
-            "dependsOn": [
-                "deploy-iot-resources",
-                "register-edge-device-on-hub",
-                "[parameters('resourceGroup')]"
-            ],
-            "resourceGroup": "[parameters('resourceGroup')]",
-            "properties": {
-                "templateLink": {
-                    "uri": "[uri(variables('_artifactsLocation'),'simulated-device.deploy.json')]"
-                },
-                "mode": "Incremental",
-                "parameters": {
-                    "_artifactsLocation": {
-                        "value": "[variables('_artifactsLocation')]"
-                    },
-                    "vmName": {
-                        "value": "[variables('simulatedDeviceName')]"
-                    },
-                    "adminUsername": {
-                        "value": "[parameters('simulatedEdgeDeviceAdminUsername')]"
-                    },
-                    "adminPasswordOrKey": {
-                        "value": "[parameters('simulatedEdgeDeviceAdminPassword')]"
-                    },
-                    "edgeDeviceConnectionString": {
-                        "value": "[if(parameters('useExistingEdgeDevice'),'',reference('register-edge-device-on-hub','2020-10-01').outputs.scriptOutputs.value.deviceConnectionString)]"
-                    },
-                    "useBastion": {
-                        "value": "[parameters('useBastionHost')]"
                     }
                 }
             }
