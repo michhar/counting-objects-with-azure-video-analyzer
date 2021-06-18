@@ -400,7 +400,6 @@
             "comments": "This nested deployment uses a deployment script to set modules on the specified edge device.",
             "dependsOn": [
                 "deploy-video-analyzer-resources",
-                "deploy-simulated-edge-device",
                 "[parameters('resourceGroup')]",
                 "deploy-container-registry"
             ],
