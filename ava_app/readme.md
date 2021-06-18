@@ -1,13 +1,13 @@
 # AVA cloud to device sample console app
 
-This directory contains a Python sample app that would enable you to invoke AVA on IoT Edge Direct Methods in a sequence and with parameters, defined by you in a JSON file (operations.json)
+This directory contains a Python sample app that would enable you to invoke AVA on IoT Edge Direct Methods in a sequence and with parameters, defined by you in a JSON file (operations.json).  This app must be run on the same local network as the Percept DK (run on dev/local machine, not the Percept DK).
 
 ## Contents
 
 | File             | Description                                                   |
 |-------------------------|---------------------------------------------------------------|
-| `readme.md`             | This README file.                                             |
-| `operations.json`       | JSON file defining the sequence of operations to execute upon.|
+| `readme.md`             | This readme file                                              |
+| `operations.json`       | JSON file defining the sequence of operations to execute upon |
 | `main.py`               | The main program file                                         |
 | `requirements.txt`      | List of all dependent Python libraries                        |
 
@@ -27,6 +27,27 @@ Create a file named `appsettings.json` in this folder. Add the following text an
 * **IoThubConnectionString** - Refers to the connection string of your IoT hub. This should have registry write and service connect access.
 * **deviceId** - Refers to your IoT Edge device ID (registered with your IoT hub)
 * **moduleId** - Refers to the module id of Azure Video Analyzer edge module (when deployed to the IoT Edge device)
+
+## Update RSTP URL
+
+In the `operations.json` and the `LivePipelineSet` section, update the RSTP url string.  The section looks as follows.  Replace `rtsp://192.168.xxx.xx:8554/h264raw` with the correct local IP address of your Percept DK.
+
+```json
+...
+
+            "opName": "livePipelineSet",
+            "opParams": {
+                "name": "Sample-Pipeline-2",
+                "properties": {
+                    "topologyName": "CVRToVideoSink",
+                    "description": "Sample pipeline description",
+                    "parameters": [
+                        {
+                            "name": "rtspUrl",
+                            "value": "rtsp://192.168.xxx.xx:8554/h264raw"
+                        },
+                        ...
+```
 
 ## Running the sample from Visual Studio Code
 
@@ -48,8 +69,8 @@ python main.py
 
 ## Troubleshooting
 
-See the [Azure Video Analyzer Troubleshooting page](https://docs.microsoft.com/azure/azure-video-analyzer/video-analyzer-docs/troubleshoot.md).
+See the [Azure Video Analyzer Troubleshooting page](https://docs.microsoft.com/en-us/azure/azure-video-analyzer/video-analyzer-docs/troubleshoot).
 
-## Next steps
+## Credits and References
 
-Experiment with different [pipeline topologies](https://docs.microsoft.com/azure/azure-video-analyzer/video-analyzer-docs/pipeline) by modifying `pipelineTopologyUrl` in operations.json.
+- The contents of this folder are based upon the [AVA Python sample app](https://github.com/Azure-Samples/video-analyzer-iot-edge-python).

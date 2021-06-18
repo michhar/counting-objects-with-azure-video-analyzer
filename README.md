@@ -57,6 +57,8 @@ Example output from Percept DK (coming soon).
 
 ## Troubleshooting
 
+* See the [Azure Video Analyzer Troubleshooting page](https://docs.microsoft.com/en-us/azure/azure-video-analyzer/video-analyzer-docs/troubleshoot).
+
 * _The module cannot access the path /var/lib/videoanalyzer/AmsApplicationData specified in the 'applicationDataDirectory' desired property._ This may occur due to previous deployments of AVA where the application data directory was populated with files.  To refresh this directory you will need to stop the iotedge daemon, delete and then recreate the directory as follows.
 
 ```
