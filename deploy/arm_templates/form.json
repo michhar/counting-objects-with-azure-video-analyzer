@@ -142,7 +142,7 @@
             "useExistingEdgeDevice": true,
             "existingHubName": "[steps('edgeDeviceSettings').existingDeviceSection.existingHubName.name]",
             "existingDeviceName": "[steps('edgeDeviceSettings').existingDeviceSection.existingDeviceName]",
-            "existingHubNameResourceGroup": "[if(contains(basics('useExistingEdgeDevice'),'existing'),substring(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id, add(lastIndexOf(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id,'resourceGroups/'),length('resourceGroups/')), sub(sub(lastIndexOf(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id,'providers/'),lastIndexOf(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id,'resourceGroups/')),16)),'')]",
+            "existingHubNameResourceGroup": "[if(true),substring(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id, add(lastIndexOf(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id,'resourceGroups/'),length('resourceGroups/')), sub(sub(lastIndexOf(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id,'providers/'),lastIndexOf(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id,'resourceGroups/')),16)),'')]",
             "resourceTags": {
                 "sample": "azure-video-analyzer"
             },
