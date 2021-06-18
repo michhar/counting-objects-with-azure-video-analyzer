@@ -1,5 +1,16 @@
 # Object Counting on the Percept DK with Azure Video Analyzer
 
+The goal of this project is to be able to recognize objects found on the edge with the Percept DK device and Vision SoM camera.  Additionally, video is saved to the cloud with Azure Video Analyzer when invoking methods that directly communicate with the edge device for continuous recording.
+
+This repo is under rapid iterations and will be updating often.  Currently it offers:
+
+* Process to deploy Azure Video Analyzer (and Azure resources), plus edge modules, to the Percept DK
+* Python console app to be run on dev/local machine that starts and stops video recording to the cloud
+
+Work in progress:
+
+* Cloud web app/dashboard to view video and object counts (plus control AVA)
+
 ## Prerequisites
 
 - Python 3.6+ (preferably an [Anaconda](https://docs.anaconda.com/anaconda/index.html) release)
@@ -71,9 +82,10 @@ sudo systemctl start iotedge
 
 > Note:  for newer iotedge daemons you may need to replace `iotedge` with `aziot-edged`.
 
-## Credits and References
+## Credits and references
 
 - [Plotly sample app](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-object-detection)
 - [Azure Video Analyzer deployment](https://github.com/Azure/video-analyzer/tree/main/setup)
+- [AVA Python sample app](https://github.com/Azure-Samples/video-analyzer-iot-edge-python)
 - [Azure Percept documentation](https://docs.microsoft.com/en-us/azure/azure-percept/)
 - [Azure Video Analyzer documentation](https://docs.microsoft.com/en-us/azure/azure-video-analyzer/video-analyzer-docs/)
