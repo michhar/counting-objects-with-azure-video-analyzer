@@ -38,9 +38,18 @@ After the script finishes you will have the following Azure resources:
 pip install -r requirements.txt
 ```
 
+## Getting started
+
+After deploying the resources in Azure as done above (by using the "Deploy to Azure" button), refer to the next steps as follows.
+
+* [AVA cloud to device sample console app](ava_app/)
+
+And if needing to deploy or redeploy from a manifest or get more information on the deployment process, go to the following folder.
+* [Edge Deployment, Redeployment and Reset](deploy/)
+
 ## Data
 
-Example output from Percept DK:
+Example output from Percept DK (coming soon).
 
 ```json
 

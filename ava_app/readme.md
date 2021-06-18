@@ -37,9 +37,14 @@ Detailed instructions for running the sample can be found in the tutorials for A
 * Right click on src/edge/config /deployment.amd64.json and select **"Create Deployment for single device"** and select the name of your edge device. This will trigger the deployment of the IoT Edge modules to your Edge device. You can view the status of the deployment in the Azure IoT Hub extension (expand 'Devices' and then 'Modules' under your IoT Edge device).
 * Right click on your edge device in Azure IoT Hub extension and select **"Start Monitoring Built-in Event Endpoint"**.
 * Ensure you have installed python dependencies from `requirements.txt` at the base of this repo. This can be done by running `pip install -r requirements.txt` at the base of the repo.
-* Select the "Cloud to Device - Console App" configuration in the run tab and start a debugging session (hit F5). You will start seeing some messages printed in the TERMINAL window. In the OUTPUT window, you will see messages that are being sent to the IoT Hub, by the AVAEdge module.
+* To run, activate your conda environment if you haven't done so already, go to the `ava_app` folder on the command line and run the `main.py` as follows.
 
-❗**Note:** *When running the debugger with the app project, the default launch.json creates a configuration with the parameter "console": "internalConsole". This does not work since internalConsole does not allow keyboard input. Changing the parameter to "console" : "integratedTerminal" fixes the problem.*
+From the base of the repo:
+```
+cd ava_deploy
+conda activate <name of your conda environment>
+python main.py
+```
 
 ## Troubleshooting
 
