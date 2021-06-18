@@ -1,12 +1,41 @@
-# Edge Deployment Setup
+# Edge Deployment, Redeployment and Reset
 
-Create a file named `.env` in this folder and add the following text to it. Provide values for all variables.
+Use this information and folder if you wish to redeploy the edge modules of this solution or reset the edge modules to what comes with the Percept DK.
 
-```env
-AVA_PROVISIONING_TOKEN="<your provisioning token>"
-SUBSCRIPTION_ID="<your Azure subscription id>"
-RESOURCE_GROUP="<your resource group name>"
-VIDEO_INPUT_FOLDER_ON_DEVICE="<a folder on your edge device with MKV files, used by RTSP simulator>"
-VIDEO_OUTPUT_FOLDER_ON_DEVICE="<a folder on your edge device used for recording video clips>"
-APPDATA_FOLDER_ON_DEVICE="<a folder on your edge device used for storing application data>"
-```
+## Contents of the `arm_templates` folder
+
+The "Deploy to Azure" button uses these files under the hood.  It can be useful to understand what is happening when one clicks the button.
+
+| File | Description |
+| --- | --- |
+| deploy-modules.sh | This script is used to deploy the IoT Edge modules to the IoT Edge device based off of the deployment manifest (general-sample-setup.modules.json) |
+| form.json | custom deployment form used in Azure Portal |
+| general-sample-setup-modules.json | Azure IoT Edge deployment manifest |
+| iot-edge-setup.sh | Checks to see if an existing Edge device exist, if not it creates a new Edge device and captures the connection string. |
+| iot.deploy.json | Deploys an IoT Hub |
+| prepare-device.sh | Configures the IoT Edge device with the required user and folder structures. |
+| start.deploy.json | Master template and controls the flow between the rest of the deployment templates |
+| video-analyzer.deploy.json | Deploys storage, identities, and the Azure Video Analyzer resources. |
+
+- [Source](https://github.com/Azure/video-analyzer/tree/main/setup)
+
+## Contents of `edge` folder
+
+| File | Description |
+| --- | --- |
+| deployment.ava.percept.template.json | Deploy or redeploy the edge modules of this AVA solution |
+| deployment.reset.percept.template.json | Reset the modules on the Percept DK to original "factory" experience; often useful to perform before you wish to redeploy the AVA solution modules |
+
+### Setup for edge
+
+Create a file named `.env` in this folder based on `envtemplate`. Provide values for all variables.
+
+### Using VSCode to deploy edge modules
+
+Use VSCode as in [this section](https://docs.microsoft.com/en-us/azure/azure-video-analyzer/video-analyzer-docs/detect-motion-emit-events-quickstart?pivots=programming-language-python#generate-and-deploy-the-deployment-manifest) to deploy the modules to the Percept DK with the above files.
+
+> Note: there are other ways to deploy edge modules such as with the Azure CLI
+
+## Resources
+
+

@@ -2,10 +2,14 @@
 
 ## Prerequisites
 
-- Python 3.6+ (preferably an Anaconda release)
-- Percept DK
+- Python 3.6+ (preferably an [Anaconda](https://docs.anaconda.com/anaconda/index.html) release)
+- Percept DK ([Purchase](https://www.microsoft.com/en-us/store/build/azure-percept/8v2qxmzbz9vc))
 
-### Set up Azure resources
+## Device setup
+
+1. Follow [Quickstart: unbox and assemble your Azure Percept DK components](https://docs.microsoft.com/en-us/azure/azure-percept/quickstart-percept-dk-unboxing) and the next steps.
+
+## Deploy Azure resources
 
 > NOTE: Things like VM availability in the selected region will cause the deployment to fail.
 
@@ -24,6 +28,15 @@ After the script finishes you will have the following Azure resources:
 - [Azure Video Analyzer](https://docs.microsoft.com/azure/azure-video-analyzer/overview)
 - [Managed Identities](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
 - [Bastion Host (if the Bastion option was set)](https://docs.microsoft.com/azure/bastion/)
+
+## Python setup
+
+1. If using Anaconda Python (recommended) [setup a conda environment](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html), otherwise, [use `venv`](https://docs.python.org/3/library/venv.html) to create a nuclear environment for this solution.
+2. Install the Python dependencies as follows.
+
+```
+pip install -r requirements.txt
+```
 
 ## Data
 
@@ -47,8 +60,9 @@ sudo systemctl start iotedge
 
 > Note:  for newer iotedge daemons you may need to replace `iotedge` with `aziot-edged`.
 
-
 ## Credits and References
 
 - [Plotly sample app](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-object-detection)
 - [Azure Video Analyzer deployment](https://github.com/Azure/video-analyzer/tree/main/setup)
+- [Azure Percept documentation](https://docs.microsoft.com/en-us/azure/azure-percept/)
+- [Azure Video Analyzer documentation](https://docs.microsoft.com/en-us/azure/azure-video-analyzer/video-analyzer-docs/)
