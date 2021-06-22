@@ -69,9 +69,9 @@ az storage file upload --share-name deployment-output --source appsettings.json 
 # set the CVR pipeline topology
 printf "set the CVR topology pipeline\n"
 
-wget https://raw.githubusercontent.com/Azure/video-analyzer/main/pipelines/live/topologies/cvr-video-sink/topology.json cvr-topology.json
+wget https://raw.githubusercontent.com/Azure/video-analyzer/main/pipelines/live/topologies/cvr-video-sink/topology.json
 wget https://raw.githubusercontent.com/michhar/counting-objects-with-azure-video-analyzer/main/deploy/arm_templates/operations.json
-GRAPH_TOPOLOGY="cvr-topology.json"
+PIPELINE_TOPOLOGY="topology.json"
 LIVE_PIPELINE_NAME="CVR-Pipeline"
 PIPELINE_TOPOLOGY_NAME="CVRToVideoSink"
 
@@ -80,7 +80,7 @@ az iot hub invoke-module-method \
     -d "$DEVICE_NAME" \
     -m avaedge \
     --mn pipelineTopologySet \
-    --mp "$GRAPH_TOPOLOGY" \
+    --mp "$PIPELINE_TOPOLOGY" \
 	--timeout 120
 
 # building rtsp url from DEVICE_IP var (input to script)
