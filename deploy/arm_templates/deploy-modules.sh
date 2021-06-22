@@ -80,7 +80,7 @@ az iot hub invoke-module-method \
     -d "$DEVICE_NAME" \
     -m avaedge \
     --mn pipelineTopologySet \
-    --mp "$PIPELINE_TOPOLOGY" \
+    --mp '{"@apiVersion": "1.0", "name": "'"$PIPELINE_TOPOLOGY"'", "properties": {}' \
 	--timeout 120
 
 # building rtsp url from DEVICE_IP var (input to script)
@@ -95,7 +95,7 @@ az iot hub invoke-module-method \
     -d "$DEVICE_NAME" \
     -m avaedge \
     --mn livePipelineSet \
-    --mp "$GRAPH_INSTANCE" \
+    --mp '{"@apiVersion": "1.0", "name": "'"$LIVE_PIPELINE_NAME"'", "properties": {}' \
     --timeout 120
 
 # activate the CVR live pipeline

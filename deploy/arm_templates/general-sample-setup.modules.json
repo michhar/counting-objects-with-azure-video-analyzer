@@ -94,7 +94,7 @@
       "azureeyemodule": {
           "properties.desired": {
               "Logging": true,
-              "ModelZipUrl": "",
+              "ModelZipUrl": "https://aedsamples.blob.core.windows.net/vision/aeddevkitnew/person-detection-retail-0013.zip",
               "RawStream": true,
               "ResultStream": true,
               "Running": true,
