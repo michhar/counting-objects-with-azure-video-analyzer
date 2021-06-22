@@ -15,6 +15,7 @@ appsettings*
 # virtualenv
 .venv
 venv/
+tmp*
 
 # Added
 unused/

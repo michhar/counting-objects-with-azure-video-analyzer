@@ -96,7 +96,7 @@
                                 "toolTip": "This list is restricted to IoT Hubs within the selected subscription.",
                                 "resourceType": "Microsoft.Devices/IotHubs",
                                 "constraints": {
-                                    "required": false
+                                    "required": true
                                 },
                                 "options": {
                                     "filter": {
@@ -125,7 +125,20 @@
                                 "defaultValue": "",
                                 "toolTip": "Enter the name of existing IoT Edge device.",
                                 "constraints": {
-                                    "required": false,
+                                    "required": true,
+                                    "regex": "",
+                                    "validationMessage": ""
+                                }
+                            },
+                            {
+                                "name": "existingDeviceIP",
+                                "type": "Microsoft.Common.TextBox",
+                                "label": "Percept DK device local network IP address",
+                                "visible": "[not(empty(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id))]",
+                                "defaultValue": "",
+                                "toolTip": "Enter the local network IP address of the existing IoT Edge device (your Percept DK) from setup.",
+                                "constraints": {
+                                    "required": true,
                                     "regex": "",
                                     "validationMessage": ""
                                 }
@@ -142,6 +155,7 @@
             "useExistingEdgeDevice": true,
             "existingHubName": "[steps('edgeDeviceSettings').existingDeviceSection.existingHubName.name]",
             "existingDeviceName": "[steps('edgeDeviceSettings').existingDeviceSection.existingDeviceName]",
+            "existingDeviceIP": "[steps('edgeDeviceSettings').existingDeviceSection.existingDeviceIP]",
             "existingHubNameResourceGroup": "[substring(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id, add(lastIndexOf(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id,'resourceGroups/'),length('resourceGroups/')), sub(sub(lastIndexOf(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id,'providers/'),lastIndexOf(steps('edgeDeviceSettings').existingDeviceSection.existingHubName.id,'resourceGroups/')),16))]",
             "resourceTags": {
                 "sample": "azure-video-analyzer"

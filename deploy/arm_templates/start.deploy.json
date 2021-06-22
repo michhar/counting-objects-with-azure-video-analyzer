@@ -43,7 +43,14 @@
         },
         "existingDeviceName": {
             "metadata": {
-                "description": "An (optional) existing edge device to use instead of creating a simulated device. It is expected to already be registered with the specified existing hub."
+                "description": "An existing edge device to use. It is expected to already be registered with the specified existing hub."
+            },
+            "defaultValue": "",
+            "type": "string"
+        },
+        "existingDeviceIP": {
+            "metadata": {
+                "description": "Local IP address of the Percept DK from setup. The device should already be setup and using the local Wi-Fi network."
             },
             "defaultValue": "",
             "type": "string"
@@ -76,8 +83,8 @@
         "managedIdentityName": "[concat(parameters('namePrefix'),'-deployment-identity-',uniqueString(parameters('resourceGroup')))]",
         "managedIdentityId": "[concat(subscription().id,'/resourceGroups/',parameters('resourceGroup'),'/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', variables('managedIdentityName'))]",
         "simulatedDeviceName": "[concat(parameters('namePrefix'),'-iot-edge-device')]",
-        "deviceName": "[if(parameters('useExistingEdgeDevice'),parameters('existingDeviceName'),variables('simulatedDeviceName'))]"
-
+        "deviceName": "[if(parameters('useExistingEdgeDevice'),parameters('existingDeviceName'),variables('simulatedDeviceName'))]",
+        "deviceIP": "[parameters('existingDeviceIP')]"
     },
     "resources": [
         {
@@ -448,6 +455,10 @@
                                     {
                                         "name": "DEVICE_ID",
                                         "value": "[variables('deviceName')]"
+                                    },
+                                    {
+                                        "name": "DEVICE_IP",
+                                        "value": "[variables('deviceIP')]"
                                     },
                                     {
                                         "name": "VIDEO_INPUT_FOLDER_ON_DEVICE",

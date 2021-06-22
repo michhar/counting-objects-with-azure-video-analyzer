@@ -9,6 +9,7 @@
 # $PROVISIONING_TOKEN               - the token used for provisioing the edge module
 # $HUB_NAME                         - the name of the IoT Hub where the edge device is registered
 # $DEVICE_ID                        - the name of the edge device on the IoT Hub
+# $DEVICE_IP                        - the local IP address of the edge device (Percept DK)
 # $VIDEO_OUTPUT_FOLDER_ON_DEVICE    - the folder where the file sink will store clips
 # $VIDEO_INPUT_FOLDER_ON_DEVICE     - the folder where where rtspsim will look for sample clips
 # $APPDATA_FOLDER_ON_DEVICE         - the folder where Video Analyzer module will store state
@@ -64,3 +65,44 @@ az storage share create --name deployment-output --account-name $AZURE_STORAGE_A
 az storage file upload --share-name deployment-output --source deployment.json --account-name $AZURE_STORAGE_ACCOUNT
 az storage file upload --share-name deployment-output --source env.txt --account-name $AZURE_STORAGE_ACCOUNT
 az storage file upload --share-name deployment-output --source appsettings.json --account-name $AZURE_STORAGE_ACCOUNT
+
+# set the CVR pipeline topology
+printf "set the CVR topology pipeline\n"
+
+wget https://raw.githubusercontent.com/Azure/video-analyzer/main/pipelines/live/topologies/cvr-video-sink/topology.json cvr-topology.json
+wget https://raw.githubusercontent.com/michhar/counting-objects-with-azure-video-analyzer/main/deploy/arm_templates/operations.json
+GRAPH_TOPOLOGY="cvr-topology.json"
+LIVE_PIPELINE_NAME="CVR-Pipeline"
+PIPELINE_TOPOLOGY_NAME="CVRToVideoSink"
+
+az iot hub invoke-module-method \
+    -n "$HUB_NAME" \
+    -d "$DEVICE_NAME" \
+    -m avaedge \
+    --mn pipelineTopologySet \
+    --mp "$GRAPH_TOPOLOGY" \
+	--timeout 120
+
+# building rtsp url from DEVICE_IP var (input to script)
+RTSP_URL="rtsp://$DEVICE_IP:8554/h264raw"
+
+# shellcheck disable=2016
+GRAPH_INSTANCE=$(< operations.json jq --arg replace_value "$RTSP_URL" '.properties.parameters[0].value = $replace_value' )
+
+# set the CVR live pipeline
+az iot hub invoke-module-method \
+    -n "$HUB_NAME" \
+    -d "$DEVICE_NAME" \
+    -m avaedge \
+    --mn livePipelineSet \
+    --mp "$GRAPH_INSTANCE" \
+    --timeout 120
+
+# activate the CVR live pipeline
+printf "activating AVA live pipeline"
+INSTANCE_RESPONSE=$(az iot hub invoke-module-method \
+    -n "$HUB_NAME" \
+    -d "$DEVICE_NAME" \
+    -m avaedge \
+    --mn livePipelineActivate \
+    --mp '{"@apiVersion" : "1.0", "name" : "'"$LIVE_PIPELINE_NAME"'"}')
