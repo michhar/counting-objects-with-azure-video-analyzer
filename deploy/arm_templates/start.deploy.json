@@ -51,8 +51,8 @@
         "resourceTags": {
             "type": "object",
             "defaultValue": {
-                "sample": "azure-video-analyzer"
-            }
+                "device": "percept-dk",
+                "sample": "people-counting-with-ava"            }
         },
         "namePrefix": {
             "metadata": {
