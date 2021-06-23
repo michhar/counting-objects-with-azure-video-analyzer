@@ -13,11 +13,36 @@ The "Deploy to Azure" button uses these files under the hood.  It can be useful 
 | general-sample-setup-modules.json | Azure IoT Edge deployment manifest |
 | iot-edge-setup.sh | Checks to see if an existing Edge device exist, if not it creates a new Edge device and captures the connection string. |
 | iot.deploy.json | Deploys an IoT Hub |
+| live-pipeline-set.json | Json payload to set the live pipeline |
 | prepare-device.sh | Configures the IoT Edge device with the required user and folder structures. |
 | start.deploy.json | Master template and controls the flow between the rest of the deployment templates |
 | video-analyzer.deploy.json | Deploys storage, identities, and the Azure Video Analyzer resources. |
 
-- [Source](https://github.com/Azure/video-analyzer/tree/main/setup)
+- [Original source](https://github.com/Azure/video-analyzer/tree/main/setup)
+
+If needing to deactivate the live pipeline, log in with the Azure CLI on the command line and run:
+
+```
+az iot hub invoke-module-method \
+    -n "<IoT Hub name>" \
+    -d "<device id/name>" \
+    -m avaedge \
+    --mn livePipelineDeactivate \
+    --mp '{"@apiVersion": "1.0", "name": "CVR-Pipeline"}'
+```
+
+> Note, the video in the AVA resource may need to be deleted (can be done in Azure Portal) before it can be activated again.
+
+To reactivate the live pipeline:
+
+```
+az iot hub invoke-module-method \
+    -n "<IoT Hub name>" \
+    -d "<device id/name>" \
+    -m avaedge \
+    --mn livePipelineActivate \
+    --mp '{"@apiVersion": "1.0", "name": "CVR-Pipeline"}'
+```
 
 ## Contents of `edge` folder
 

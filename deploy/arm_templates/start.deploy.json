@@ -48,13 +48,6 @@
             "defaultValue": "",
             "type": "string"
         },
-        "existingDeviceIP": {
-            "metadata": {
-                "description": "Local IP address of the Percept DK from setup. The device should already be setup and using the local Wi-Fi network."
-            },
-            "defaultValue": "",
-            "type": "string"
-        },
         "resourceTags": {
             "type": "object",
             "defaultValue": {
@@ -83,8 +76,7 @@
         "managedIdentityName": "[concat(parameters('namePrefix'),'-deployment-identity-',uniqueString(parameters('resourceGroup')))]",
         "managedIdentityId": "[concat(subscription().id,'/resourceGroups/',parameters('resourceGroup'),'/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', variables('managedIdentityName'))]",
         "simulatedDeviceName": "[concat(parameters('namePrefix'),'-iot-edge-device')]",
-        "deviceName": "[if(parameters('useExistingEdgeDevice'),parameters('existingDeviceName'),variables('simulatedDeviceName'))]",
-        "deviceIP": "[parameters('existingDeviceIP')]"
+        "deviceName": "[if(parameters('useExistingEdgeDevice'),parameters('existingDeviceName'),variables('simulatedDeviceName'))]"
     },
     "resources": [
         {
@@ -455,10 +447,6 @@
                                     {
                                         "name": "DEVICE_ID",
                                         "value": "[variables('deviceName')]"
-                                    },
-                                    {
-                                        "name": "DEVICE_IP",
-                                        "value": "[variables('deviceIP')]"
                                     },
                                     {
                                         "name": "VIDEO_INPUT_FOLDER_ON_DEVICE",
