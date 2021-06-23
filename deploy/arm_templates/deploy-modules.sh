@@ -75,34 +75,34 @@ PIPELINE_TOPOLOGY="topology.json"
 LIVE_PIPELINE_NAME="CVR-Pipeline"
 PIPELINE_TOPOLOGY_NAME="CVRToVideoSink"
 
-az iot hub invoke-module-method \
-    -n "$HUB_NAME" \
-    -d "$DEVICE_NAME" \
-    -m avaedge \
-    --mn pipelineTopologySet \
-    --mp '{"@apiVersion": "1.0", "name": "'"$PIPELINE_TOPOLOGY"'", "properties": {}}' \
-	--timeout 120
+# az iot hub invoke-module-method \
+#     -n "$HUB_NAME" \
+#     -d "$DEVICE_NAME" \
+#     -m avaedge \
+#     --mn pipelineTopologySet \
+#     --mp '{"@apiVersion": "1.0", "name": "'"$PIPELINE_TOPOLOGY"'", "properties": {}}' \
+# 	--timeout 120
 
-# building rtsp url from DEVICE_IP var (input to script)
-RTSP_URL="rtsp://$DEVICE_IP:8554/h264raw"
+# # building rtsp url from DEVICE_IP var (input to script)
+# RTSP_URL="rtsp://$DEVICE_IP:8554/h264raw"
 
-# shellcheck disable=2016
-GRAPH_INSTANCE=$(< operations.json jq --arg replace_value "$RTSP_URL" '.properties.parameters[0].value = $replace_value' )
+# # shellcheck disable=2016
+# GRAPH_INSTANCE=$(< operations.json jq --arg replace_value "$RTSP_URL" '.properties.parameters[0].value = $replace_value' )
 
-# set the CVR live pipeline
-az iot hub invoke-module-method \
-    -n "$HUB_NAME" \
-    -d "$DEVICE_NAME" \
-    -m avaedge \
-    --mn livePipelineSet \
-    --mp '{"@apiVersion": "1.0", "name": "'"$LIVE_PIPELINE_NAME"'", "properties": {}}' \
-    --timeout 120
+# # set the CVR live pipeline
+# az iot hub invoke-module-method \
+#     -n "$HUB_NAME" \
+#     -d "$DEVICE_NAME" \
+#     -m avaedge \
+#     --mn livePipelineSet \
+#     --mp '{"@apiVersion": "1.0", "name": "'"$LIVE_PIPELINE_NAME"'", "properties": {}}' \
+#     --timeout 120
 
-# activate the CVR live pipeline
-printf "activating AVA live pipeline"
-INSTANCE_RESPONSE=$(az iot hub invoke-module-method \
-    -n "$HUB_NAME" \
-    -d "$DEVICE_NAME" \
-    -m avaedge \
-    --mn livePipelineActivate \
-    --mp '{"@apiVersion" : "1.0", "name" : "'"$LIVE_PIPELINE_NAME"'"}')
+# # activate the CVR live pipeline
+# printf "activating AVA live pipeline"
+# INSTANCE_RESPONSE=$(az iot hub invoke-module-method \
+#     -n "$HUB_NAME" \
+#     -d "$DEVICE_NAME" \
+#     -m avaedge \
+#     --mn livePipelineActivate \
+#     --mp '{"@apiVersion" : "1.0", "name" : "'"$LIVE_PIPELINE_NAME"'"}')

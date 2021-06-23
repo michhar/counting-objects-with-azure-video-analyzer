@@ -37,7 +37,7 @@
                     "parameters": [
                         {
                             "name": "rtspUrl",
-                            "value": "rtsp://192.168.xxx.xx:8554/h264raw"
+                            "value": "rtsp://azureeyemodule:8554/h264raw"
                         },
                         {
                             "name": "rtspUserName",
