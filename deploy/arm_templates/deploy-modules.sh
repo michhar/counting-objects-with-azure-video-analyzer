@@ -94,9 +94,9 @@ if [ ! "$DEVICE_RUNNING" == "200" ]; then
     exitWithError
 fi
 
-# make sure avaedge is running (block until) - checking up to 5min every 10s
+# make sure avaedge is running (block until) - checking up to 10min every 10s
 MODULE_RUNNING="Failed"
-for ((i=1; i<=30; i++)); do
+for ((i=1; i<=60; i++)); do
     
     if [ ! "$MODULE_RUNNING" == "Running" ]; then
         MODULE_RUNNING=$( az iot hub query -n "$HUB_NAME" -q "select properties.reported.State from devices.modules where devices.modules.moduleId = 'avaedge' and devices.deviceId = '$DEVICE_ID'" | jq -r '.[].State')
@@ -127,7 +127,7 @@ fi
 
 # make sure avaedge is running again
 MODULE_RUNNING="Failed" # reset
-for ((i=1; i<=30; i++)); do
+for ((i=1; i<=60; i++)); do
     
     if [ ! "$MODULE_RUNNING" == "Running" ]; then
         MODULE_RUNNING=$( az iot hub query -n "$HUB_NAME" -q "select properties.reported.State from devices.modules where devices.modules.moduleId = 'avaedge' and devices.deviceId = '$DEVICE_ID'" | jq -r '.[].State')
@@ -152,7 +152,7 @@ PIPELINE_TOPOLOGY_PAYLOAD=$(< topology.json)
 printf "setting AVA pipeline topology"
 az iot hub invoke-module-method \
     -n "$HUB_NAME" \
-    -d "$DEVICE_NAME" \
+    -d "$DEVICE_ID" \
     -m avaedge \
     --mn pipelineTopologySet \
     --mp  "$PIPELINE_TOPOLOGY_PAYLOAD" \
@@ -163,7 +163,7 @@ LIVE_PIPELINE_SET_PAYLOAD=$(< live-pipeline-set.json)
 echo "$(info) setting AVA live pipeline"
 az iot hub invoke-module-method \
     -n "$HUB_NAME" \
-    -d "$DEVICE_NAME" \
+    -d "$DEVICE_ID" \
     -m avaedge \
     --mn livePipelineSet \
     --mp "$LIVE_PIPELINE_SET_PAYLOAD" \
@@ -174,7 +174,7 @@ LIVE_PIPELINE_ACTIVATE_PAYLOAD='{"@apiVersion": "1.0", "name": "CVR-Pipeline"}'
 echo "$(info) activating AVA live pipeline"
 ACTIVATE_RESPONSE=$(az iot hub invoke-module-method \
     -n "$HUB_NAME" \
-    -d "$DEVICE_NAME" \
+    -d "$DEVICE_ID" \
     -m avaedge \
     --mn livePipelineActivate \
     --mp "$LIVE_PIPELINE_ACTIVATE_PAYLOAD")
