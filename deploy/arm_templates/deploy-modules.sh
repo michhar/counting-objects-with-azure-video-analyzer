@@ -25,12 +25,26 @@
 # automatically install any extensions
 az config set extension.use_dynamic_install=yes_without_prompt
 
+# Define helper function for logging
+info() {
+    echo "$(date +"%Y-%m-%d %T") [INFO]"
+}
+
+# Define helper function for logging. This will change the Error text color to red
+error() {
+    echo "$(date +"%Y-%m-%d %T") [ERROR]"
+}
+
+exitWithError() {
+    exit 1
+}
+
 # download the deployment manifest file
-printf "downloading $DEPLOYMENT_MANIFEST_TEMPLATE_URL\n"
+echo "$(info) downloading $DEPLOYMENT_MANIFEST_TEMPLATE_URL\n"
 curl -s $DEPLOYMENT_MANIFEST_TEMPLATE_URL > deployment.json
 
 # update the values in the manifest
-printf "replacing value in manifest\n"
+echo "$(info) replacing value in manifest\n"
 sed -i "s@\$AVA_PROVISIONING_TOKEN@${PROVISIONING_TOKEN}@g" deployment.json
 sed -i "s@\$VIDEO_OUTPUT_FOLDER_ON_DEVICE@${VIDEO_OUTPUT_FOLDER_ON_DEVICE}@g" deployment.json
 sed -i "s@\$VIDEO_INPUT_FOLDER_ON_DEVICE@${VIDEO_INPUT_FOLDER_ON_DEVICE}@g" deployment.json
@@ -54,18 +68,81 @@ echo "\"moduleId\": \"$IOT_EDGE_MODULE_NAME\"" >> appsettings.json
 echo "}" >> appsettings.json
 
 # deploy the manifest to the iot hub
-printf "deploying manifest to $DEVICE_ID on $HUB_NAME\n"
+echo "$(info) deploying manifest to $DEVICE_ID on $HUB_NAME\n"
 az iot edge set-modules --device-id $DEVICE_ID --hub-name $HUB_NAME --content deployment.json --only-show-error -o table
 
 # store the manifest for later reference
-printf "storing manifest for reference\n"
+echo "$(info) storing manifest for reference\n"
 az storage share create --name deployment-output --account-name $AZURE_STORAGE_ACCOUNT
 az storage file upload --share-name deployment-output --source deployment.json --account-name $AZURE_STORAGE_ACCOUNT
 az storage file upload --share-name deployment-output --source env.txt --account-name $AZURE_STORAGE_ACCOUNT
 az storage file upload --share-name deployment-output --source appsettings.json --account-name $AZURE_STORAGE_ACCOUNT
 
+# make sure device is running (block until) - checking up to 5min every 10s
+DEVICE_RUNNING="Failed"
+for ((i=1; i<=30; i++)); do
+    if [ ! "$DEVICE_RUNNING" == "200" ]; then
+        # shellcheck disable=2016
+        DEVICE_RUNNING=$( az iot hub query -n "$HUB_NAME" -q "select properties.reported.azureDeviceUpdateAgent.client.resultCode from devices where devices.deviceId = '$DEVICE_ID'" --query "[].resultCode" --output tsv)
+        sleep 10s
+    fi
+done
+
+if [ ! "$DEVICE_RUNNING" == "200" ]; then
+    echo "$(error) IoT Edge runtime is reporting running state. Please check IoT Edge runtime on Edge device"
+    echo "$(error) Current IoT Edge Runtime Status is $DEVICE_RUNNING"
+    exitWithError
+fi
+
+# make sure avaedge is running (block until) - checking up to 5min every 10s
+MODULE_RUNNING="Failed"
+for ((i=1; i<=30; i++)); do
+    
+    if [ ! "$MODULE_RUNNING" == "Running" ]; then
+        MODULE_RUNNING=$( az iot hub query -n "$HUB_NAME" -q "select properties.reported.State from devices.modules where devices.modules.moduleId = 'avaedge' and devices.deviceId = '$DEVICE_ID'" | jq -r '.[].State')
+        sleep 10s
+    fi
+done
+
+if [ ! "$MODULE_RUNNING" == "Running" ]; then
+    echo "$(error) AVA is not not running on Edge device. Please check IoT Edge runtime on Edge device"
+    echo "$(error) Current AVA Edge Module Status is $MODULE_RUNNING"
+    exitWithError
+fi
+
+
+# restart avaedge to update properties
+echo "$(info) Restarting the avaedge module on edge device"
+RESTART_MODULE=$(az iot hub invoke-module-method --method-name "RestartModule" -n "$HUB_NAME" -d "$DEVICE_ID" -m "\$edgeAgent" --method-payload \
+'{"schemaVersion": "1.0","id": "avaedge"}')
+
+if [ "$(echo "$RESTART_MODULE" | jq '.status')" == 200 ]; then
+	echo "$(info) Restarted the avaedge module on edge device"
+else
+    echo "$(error) Failed to restart the avaedge module on edge device."
+    echo "ERROR CODE: $(echo "$RESTART_MODULE" | jq '.payload.error.code')"
+    echo "ERROR MESSAGE: $(echo "$RESTART_MODULE" | jq '.payload.error.message')"
+    exitWithError
+fi
+
+# make sure avaedge is running again
+MODULE_RUNNING="Failed" # reset
+for ((i=1; i<=30; i++)); do
+    
+    if [ ! "$MODULE_RUNNING" == "Running" ]; then
+        MODULE_RUNNING=$( az iot hub query -n "$HUB_NAME" -q "select properties.reported.State from devices.modules where devices.modules.moduleId = 'avaedge' and devices.deviceId = '$DEVICE_ID'" | jq -r '.[].State')
+        sleep 10s
+    fi
+done
+
+if [ ! "$MODULE_RUNNING" == "Running" ]; then
+    echo "$(error) AVA is not not running on Edge device. Please check IoT Edge runtime on Edge device"
+    echo "$(error) Current AVA Edge Module Status is $MODULE_RUNNING"
+    exitWithError
+fi
+
 # set the CVR pipeline topology
-printf "set the CVR topology pipeline\n"
+echo "$(info) set the CVR topology pipeline\n"
 
 wget https://raw.githubusercontent.com/Azure/video-analyzer/main/pipelines/live/topologies/cvr-video-sink/topology.json
 wget https://raw.githubusercontent.com/michhar/counting-objects-with-azure-video-analyzer/main/deploy/arm_templates/live-pipeline-set.json
@@ -83,7 +160,7 @@ az iot hub invoke-module-method \
 
 # set the CVR live pipeline
 LIVE_PIPELINE_SET_PAYLOAD=$(< live-pipeline-set.json)
-printf "setting AVA live pipeline"
+echo "$(info) setting AVA live pipeline"
 az iot hub invoke-module-method \
     -n "$HUB_NAME" \
     -d "$DEVICE_NAME" \
@@ -94,7 +171,7 @@ az iot hub invoke-module-method \
 
 # activate the CVR live pipeline
 LIVE_PIPELINE_ACTIVATE_PAYLOAD='{"@apiVersion": "1.0", "name": "CVR-Pipeline"}'
-printf "activating AVA live pipeline"
+echo "$(info) activating AVA live pipeline"
 ACTIVATE_RESPONSE=$(az iot hub invoke-module-method \
     -n "$HUB_NAME" \
     -d "$DEVICE_NAME" \
