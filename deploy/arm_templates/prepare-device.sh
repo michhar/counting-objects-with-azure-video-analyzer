@@ -21,11 +21,6 @@ sudo mkdir -p /home/localedgeuser
 sudo mkdir -p /home/localedgeuser/samples
 sudo mkdir -p /home/localedgeuser/samples/input
 
-sudo curl https://lvamedia.blob.core.windows.net/public/camera-300s.mkv --output /home/localedgeuser/samples/input/camera-300s.mkv
-sudo curl https://lvamedia.blob.core.windows.net/public/lots_284.mkv --output /home/localedgeuser/samples/input/lots_284.mkv
-sudo curl https://lvamedia.blob.core.windows.net/public/lots_015.mkv --output /home/localedgeuser/samples/input/lots_015.mkv
-sudo curl https://lvamedia.blob.core.windows.net/public/t2.mkv --output /home/localedgeuser/samples/input/t2.mkv
-
 # give the local user access
 sudo chown -R localedgeuser:localedgegroup /home/localedgeuser/
 
@@ -39,6 +34,8 @@ sudo mkdir -p /var/lib/videoanalyzer
 sudo chown -R localedgeuser:localedgegroup /var/lib/videoanalyzer/
 sudo mkdir -p /var/lib/videoanalyzer/tmp/ 
 sudo chown -R localedgeuser:localedgegroup /var/lib/videoanalyzer/tmp/
+sudo mkdir -p /var/lib/videoanalyzer/logs
+sudo chown -R localedgeuser:localedgegroup /var/lib/videoanalyzer/logs
 
 # output folder for file sink
 sudo mkdir -p /var/media
