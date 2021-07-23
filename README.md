@@ -26,21 +26,21 @@ Work in progress:
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmichhar%2Fcounting-objects-with-azure-video-analyzer%2Fmain%2Fdeploy%2Farm_templates%2Fstart.deploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fmichhar%2Fcounting-objects-with-azure-video-analyzer%2Fmain%2Fdeploy%2Farm_templates%2Fform.json)
 
-After the script finishes you will have the following Azure resources:
+After the script finishes you will have the following Azure resources in a new Resource Group in addition to your existing IoT Hub you specified:
 
-- [IoT Hub](https://docs.microsoft.com/azure/iot-hub/about-iot-hub)
-- [Virtual Machine (virtual Edge device)](https://docs.microsoft.com/azure/virtual-machines/)
-  - [Network interface](https://docs.microsoft.com/rest/api/virtualnetwork/networkinterfaces)
-  - [Disk](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview)
-  - [Network security group](https://docs.microsoft.com/azure/virtual-network/network-security-groups-overview)
-  - [Public IP address (if the Bastion option was not set)](https://docs.microsoft.com/azure/virtual-network/public-ip-addresses)
-- [Virtual network](https://docs.microsoft.com/azure/virtual-network/virtual-networks-overview)
-- [Storage account](https://docs.microsoft.com/azure/storage/common/storage-account-overview) 
+- [Storage Account](https://docs.microsoft.com/azure/storage/common/storage-account-overview) 
 - [Azure Video Analyzer](https://docs.microsoft.com/azure/azure-video-analyzer/overview)
+  - With an active pipeline for video recording running
+- [Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/)
 - [Managed Identities](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
-- [Bastion Host (if the Bastion option was set)](https://docs.microsoft.com/azure/bastion/)
 
-## Python setup
+> **IMPORTANT**:  To be able to redeploy the AVA modules, you should keep the AVA Provisioning Token for your records (this can not be found after redeploying with alternative deployment manifests).  After deployment, go to the specified IoT Hub (probably in a different resource group) --> IoT Edge --> your device name --> avaedge Module --> Module Identity Twin --> in "properties" --> "desired" --> copy and save "ProvisioningToken".
+
+## Optional steps (WIP)
+
+After deploying the resources in Azure as done above (by using the "Deploy to Azure" button), refer to the next steps as follows.
+
+### Python setup
 
 1. If using Anaconda Python (recommended) [setup a conda environment](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html), otherwise, [use `venv`](https://docs.python.org/3/library/venv.html) to create a nuclear environment for this solution.
 2. Install the Python dependencies as follows.
@@ -49,11 +49,9 @@ After the script finishes you will have the following Azure resources:
 pip install -r requirements.txt
 ```
 
-## Getting started
+3.  Follow [AVA cloud to device sample console app](ava_app/) instructions.
 
-After deploying the resources in Azure as done above (by using the "Deploy to Azure" button), refer to the next steps as follows.
-
-* [AVA cloud to device sample console app](ava_app/)
+### Edge reset or redeploy
 
 And if needing to deploy or redeploy from a manifest or get more information on the deployment process, go to the following folder.
 * [Edge Deployment, Redeployment and Reset](deploy/)
@@ -89,3 +87,22 @@ sudo systemctl start iotedge
 - [AVA Python sample app](https://github.com/Azure-Samples/video-analyzer-iot-edge-python)
 - [Azure Percept documentation](https://docs.microsoft.com/en-us/azure/azure-percept/)
 - [Azure Video Analyzer documentation](https://docs.microsoft.com/en-us/azure/azure-video-analyzer/video-analyzer-docs/)
+
+## Additional notes
+
+The Vision SoM on the Percept DK returns json in the format:
+
+```json
+{
+  "NEURAL_NETWORK": [
+    {
+      "bbox": [0.404, 0.369, 0.676, 0.984],
+      "label": "person",
+      "confidence": "0.984375",
+      "timestamp": "1626991877400034126"
+    }
+  ]
+}
+```
+
+Here, with the simple http server, we sync it in the correct format for AVA.

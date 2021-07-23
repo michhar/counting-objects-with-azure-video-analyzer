@@ -46,6 +46,8 @@ az iot hub invoke-module-method \
 
 ## Contents of `edge` folder
 
+The contents of this folder are for debugging.
+
 | File | Description |
 | --- | --- |
 | deployment.ava.percept.template.json | Deploy or redeploy the edge modules of this AVA solution |

@@ -10,6 +10,11 @@
             "minDockerVersion": "v1.25",
             "loggingOptions": "",
             "registryCredentials": {
+              "$CONTAINER_REGISTRY_USERNAME_myacr": {
+                "username": "$CONTAINER_REGISTRY_USERNAME_myacr",
+                "password": "$CONTAINER_REGISTRY_PASSWORD_myacr",
+                "address": "$CONTAINER_REGISTRY_USERNAME_myacr.azurecr.io"
+              }
             }
           }
         },
@@ -83,9 +88,20 @@
               }
             }
           },
+          "simpleserver": {
+            "settings": {
+              "image": "$CONTAINER_REGISTRY_USERNAME_myacr.azurecr.io/avaextension-eye-server:v1.9",
+              "createOptions": {
+              }
+            },
+              "type": "docker",
+              "version": "1.0",
+              "status": "running",
+              "restartPolicy": "always"
+          },
           "azureeyemodule": {
               "settings": {
-                  "image": "mcr.microsoft.com/azureedgedevices/azureeyemodule:2104-2",
+                  "image": "mcr.microsoft.com/azureedgedevices/azureeyemodule:2106-2",
                   "createOptions": {
                     "ExposedPorts": {
                       "8554/udp":{},
@@ -117,23 +133,7 @@
               "version": "1.0",
               "status": "running",
               "restartPolicy": "always"
-          },
-            "rtspsim": {
-              "version": "1.0",
-              "type": "docker",
-              "status": "running",
-              "restartPolicy": "always",
-              "settings": {
-                "image": "mcr.microsoft.com/lva-utilities/rtspsim-live555:1.2",
-                "createOptions": {
-                  "HostConfig": {
-                    "Binds": [
-                      "$VIDEO_INPUT_FOLDER_ON_DEVICE:/live/mediaServer/media" 
-                    ]
-                  }
-                }
-              }
-            }
+          }
         }
       }
     },
@@ -141,7 +141,10 @@
       "properties.desired": {
         "schemaVersion": "1.0",
         "routes": {
-          "route": "FROM /messages/* INTO $upstream"
+          "AVAToHub": "FROM /messages/modules/avaedge/outputs/* INTO $upstream",
+          "EyeToSimpleServer": "FROM /messages/modules/azureeyemodule/outputs/* INTO BrokeredEndpoint(\"/modules/simpleserver/inputs/input1\")",
+          "SimpleServerToHub": "FROM /messages/modules/simpleserver/outputs/* INTO $upstream"
+
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200
@@ -164,7 +167,7 @@
     "azureeyemodule": {
         "properties.desired": {
             "Logging": true,
-            "ModelZipUrl": "",
+            "ModelZipUrl": "https://aedsamples.blob.core.windows.net/vision/aeddevkitnew/person-detection-retail-0013.zip",
             "RawStream": true,
             "ResultStream": true,
             "Running": true,

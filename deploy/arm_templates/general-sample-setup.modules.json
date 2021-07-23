@@ -39,7 +39,7 @@
           "modules": {
             "azureeyemodule": {
               "settings": {
-                "image": "mcr.microsoft.com/azureedgedevices/azureeyemodule:2104-2",
+                "image": "mcr.microsoft.com/azureedgedevices/azureeyemodule:2106-2",
                 "createOptions": "{\"ExposedPorts\":{\"8554/udp\":{},\"8554/tcp\":{}},\"HostConfig\":{\"Binds\":[\"/dev/bus/usb:/dev/bus/usb\"],\"DeviceCgroupRules\":[\"c 189:* rmw\"],\"PortBindings\":{\"8554/udp\":[{\"HostPort\":\"8554\"}],\"8554/tcp\":[{\"HostPort\":\"8554\"}]}}}"
               },
               "type": "docker",

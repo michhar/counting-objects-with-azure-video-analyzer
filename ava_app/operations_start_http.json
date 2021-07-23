@@ -18,21 +18,21 @@
         {
             "opName": "WaitForInput",
             "opParams": {
-                "message": "Press Enter to continue"
+                "message": "Press Enter to set the topology, set the pipeline and activate the pipeline."
             }
         },
         {
             "opName": "pipelineTopologySet",
             "opParams": {
-                "pipelineTopologyUrl": "https://raw.githubusercontent.com/Azure/video-analyzer/main/pipelines/live/topologies/cvr-video-sink/topology.json"
+                "pipelineTopologyFile": "topology.json"
             }
         },
         {
             "opName": "livePipelineSet",
             "opParams": {
-                "name": "Sample-Pipeline-2",
+                "name": "HTTP-Pipeline",
                 "properties": {
-                    "topologyName": "CVRToVideoSink",
+                    "topologyName": "CVRWithHttpExtension",
                     "description": "Sample pipeline description",
                     "parameters": [
                         {
@@ -46,7 +46,11 @@
                         {
                             "name": "rtspPassword",
                             "value": "testpassword"
-                        }                        
+                        },
+                        {
+                            "name": "inferencingUrl",
+                            "value": "http://simpleserver/score"
+                        }                                           
                     ]
                 }
             }
@@ -54,7 +58,7 @@
         {
             "opName": "livePipelineActivate",
             "opParams": {
-                "name": "Sample-Pipeline-2"
+                "name": "HTTP-Pipeline"
             }
         },
         {
@@ -64,46 +68,8 @@
         {
             "opName": "WaitForInput",
             "opParams": {
-                "message": "The livePipeline has been activated. Press Enter to continue and deactivate the livePipeline."
+                "message": "The livePipeline has been activated."
             }
-        },
-        {
-            "opName": "livePipelineDeactivate",
-            "opParams": {
-                "name": "Sample-Pipeline-2"
-            }
-        },
-        {
-            "opName": "livePipelineDelete",
-            "opParams": {
-                "name": "Sample-Pipeline-2"
-            }
-        },
-        {
-            "opName": "livePipelineList",
-            "opParams": {}
-        },
-        {
-            "opName": "WaitForInput",
-            "opParams": {
-                "message": "Press Enter to continue"
-            }
-        },
-        {
-            "opName": "pipelineTopologyDelete",
-            "opParams": {
-                "name": "CVRToVideoSink"
-            }
-        },
-        {
-            "opName": "WaitForInput",
-            "opParams": {
-                "message": "Press Enter to continue"
-            }
-        },
-        {
-            "opName": "pipelineTopologyList",
-            "opParams": {}
         },
         {
             "opName": "WaitForInput",

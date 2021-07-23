@@ -1,5 +1,7 @@
 # AVA cloud to device sample console app
 
+To manually call AVA direct methods for debugging.
+
 This directory contains a Python sample app that would enable you to invoke AVA on IoT Edge Direct Methods in a sequence and with parameters, defined by you in a JSON file (operations.json).  This app must be run on the same local network as the Percept DK (run on dev/local machine, not the Percept DK).
 
 ## Contents
@@ -7,7 +9,7 @@ This directory contains a Python sample app that would enable you to invoke AVA 
 | File             | Description                                                   |
 |-------------------------|---------------------------------------------------------------|
 | `readme.md`             | This readme file                                              |
-| `operations.json`       | JSON file defining the sequence of operations to execute upon |
+| `operations_all.json`   | JSON file defining the sequence of operations to execute upon |
 | `main.py`               | The main program file                                         |
 | `requirements.txt`      | List of all dependent Python libraries                        |
 
@@ -28,27 +30,6 @@ Create a file named `appsettings.json` in this folder. Add the following text an
 * **deviceId** - Refers to your IoT Edge device ID (registered with your IoT hub)
 * **moduleId** - Refers to the module id of Azure Video Analyzer edge module (when deployed to the IoT Edge device)
 
-## Update RSTP URL
-
-In the `operations.json` and the `LivePipelineSet` section, update the RSTP url string.  The section looks as follows.  Replace `rtsp://192.168.xxx.xx:8554/h264raw` with the correct local IP address of your Percept DK.
-
-```json
-...
-
-            "opName": "livePipelineSet",
-            "opParams": {
-                "name": "Sample-Pipeline-2",
-                "properties": {
-                    "topologyName": "CVRToVideoSink",
-                    "description": "Sample pipeline description",
-                    "parameters": [
-                        {
-                            "name": "rtspUrl",
-                            "value": "rtsp://192.168.xxx.xx:8554/h264raw"
-                        },
-                        ...
-```
-
 ## Running the sample from Visual Studio Code
 
 Detailed instructions for running the sample can be found in the tutorials for AVA on IoT Edge. Below is a summary of key steps. Make sure you have installed the required prerequisites.
@@ -64,6 +45,14 @@ From the base of the repo:
 ```
 cd ava_deploy
 conda activate <name of your conda environment>
+python main.py
+```
+
+## Deactivate and Delete
+
+To deactivate a live AVA pipeline and delete the pipeline topology, replace `operations_start_http.json` on line 79 of `main.py` with `operations_delete_http.json` and run.  This is nice for debugging purposes and you may always reactivate as shown above.
+
+```
 python main.py
 ```
 

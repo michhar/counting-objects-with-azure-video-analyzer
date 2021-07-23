@@ -2,6 +2,7 @@ import json
 from os import path
 import pathlib
 import logging
+import argparse
 from builtins import input
 import ssl
 import urllib.request
@@ -75,8 +76,21 @@ class LivePipelineManager:
 
 if __name__ == '__main__':
     manager = LivePipelineManager()
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--action', default='start',
+                        help='--action must be "start" or "stop" to start AVA or stop AVA, respectively.')
+
+    args = parser.parse_args()
     
-    operations_data_json = pathlib.Path('operations.json').read_text()
+    if args.action == 'start':
+        operations_data_json = pathlib.Path('operations_start_http.json').read_text()
+    elif args.action == 'stop':
+        operations_data_json = pathlib.Path('operations_delete_http.json').read_text()
+    else:
+        print('action value not recognized.  --action must be "start" or "stop" to start AVA or stop AVA, respectively.')
+        exit(-1)
+
     operations_data = json.loads(operations_data_json)
 
     for operation in operations_data['operations']:
