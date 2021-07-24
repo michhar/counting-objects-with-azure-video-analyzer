@@ -90,7 +90,7 @@
           },
           "simpleserver": {
             "settings": {
-              "image": "$CONTAINER_REGISTRY_USERNAME_myacr.azurecr.io/avaextension-eye-server:v1.9",
+              "image": "$CONTAINER_REGISTRY_USERNAME_myacr.azurecr.io/avaextension-eye-server:v1.10",
               "createOptions": {
               }
             },
@@ -142,8 +142,7 @@
         "schemaVersion": "1.0",
         "routes": {
           "AVAToHub": "FROM /messages/modules/avaedge/outputs/* INTO $upstream",
-          "EyeToSimpleServer": "FROM /messages/modules/azureeyemodule/outputs/* INTO BrokeredEndpoint(\"/modules/simpleserver/inputs/input1\")",
-          "SimpleServerToHub": "FROM /messages/modules/simpleserver/outputs/* INTO $upstream"
+          "EyeToSimpleServer": "FROM /messages/modules/azureeyemodule/outputs/* INTO BrokeredEndpoint(\"/modules/simpleserver/inputs/input1\")"
 
         },
         "storeAndForwardConfiguration": {

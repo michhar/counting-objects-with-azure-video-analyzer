@@ -51,24 +51,25 @@ def score():
             # NB:  AVA is still sending images, but we are ignoring them
             inference_list = json.loads(input_message.data)['NEURAL_NETWORK']
             detected_objects = []
-            for item in inference_list:
-                xmin, ymin, xmax, ymax = [float(x) for x in item["bbox"]]
-                json_data = {
-                    "type": "entity",
-                    "entity" : {
-                        "tag" : {
-                            "value" : item["label"],
-                            "confidence": float(item["confidence"])
-                        },
-                        "box": {
-                            "l": xmin,
-                            "t": ymin,
-                            "w": ymax-ymin,
-                            "h": xmax-xmin
+            if isinstance(inference_list, list):
+                for item in inference_list:
+                    xmin, ymin, xmax, ymax = [float(x) for x in item["bbox"]]
+                    json_data = {
+                        "type": "entity",
+                        "entity" : {
+                            "tag" : {
+                                "value" : item["label"],
+                                "confidence": float(item["confidence"])
+                            },
+                            "box": {
+                                "l": xmin,
+                                "t": ymin,
+                                "w": ymax-ymin,
+                                "h": xmax-xmin
+                            }
                         }
                     }
-                }
-                detected_objects.append(json_data)
+                    detected_objects.append(json_data)
 
             if len(detected_objects) > 0:
                 respBody = {
