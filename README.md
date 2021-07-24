@@ -1,11 +1,12 @@
 # Object Counting on the Percept DK with Azure Video Analyzer
 
-The goal of this project is to be able to recognize objects found on the edge with the Percept DK device and Vision SoM camera.  Additionally, video is saved to the cloud with Azure Video Analyzer when invoking methods that directly communicate with the edge device for continuous recording.
+The goal of this project is to be able to recognize objects found on the edge with the Percept DK device and Vision SoM camera using Azure Video Anlyzer (AVA) as the platform.  Additionally, video is saved to the cloud with AVA when invoking methods that directly communicate with the edge device for continuous recording (default when using the "Deploy to Azure" button below).
 
 This repo is under rapid iterations and will be updating often.  Currently it offers:
 
-* Process to deploy Azure Video Analyzer (and Azure resources), plus edge modules, to the Percept DK
-* Python console app to be run on dev/local machine that starts and stops video recording to the cloud
+* Process to deploy Azure Video Analyzer (and Azure resources), plus edge modules, to the Percept DK and initiate cloud recording
+* [Optional] Python console app in the `ava_app` folder (for debugging) to be run on dev/local machine that starts and stops video recording to the cloud
+* [Optional] Deployment manifests in the `deploy/edge` folder to reset the Percept DK to original modules or redeploy the AVA pipeline (for debugging)
 
 Work in progress:
 
@@ -13,8 +14,9 @@ Work in progress:
 
 ## Prerequisites
 
-- Python 3.6+ (preferably an [Anaconda](https://docs.anaconda.com/anaconda/index.html) release)
 - Percept DK ([Purchase](https://www.microsoft.com/en-us/store/build/azure-percept/8v2qxmzbz9vc))
+- Azure Subscription - [Free trial account](https://azure.microsoft.com/en-us/free/)
+- [Optional - for debugging] Python 3.6+ (preferably an [Anaconda](https://docs.anaconda.com/anaconda/index.html) release)
 
 ## Device setup
 

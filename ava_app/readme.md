@@ -45,15 +45,15 @@ From the base of the repo:
 ```
 cd ava_deploy
 conda activate <name of your conda environment>
-python main.py
+python main.py --action start
 ```
 
 ## Deactivate and Delete
 
-To deactivate a live AVA pipeline and delete the pipeline topology, replace `operations_start_http.json` on line 79 of `main.py` with `operations_delete_http.json` and run.  This is nice for debugging purposes and you may always reactivate as shown above.
+To deactivate a live AVA pipeline run the following command.  This is nice for debugging purposes and you may always reactivate as shown above.
 
 ```
-python main.py
+python main.py --action stop
 ```
 
 ## Troubleshooting

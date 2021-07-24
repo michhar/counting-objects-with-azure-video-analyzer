@@ -117,7 +117,7 @@
       {
         "@type": "#Microsoft.VideoAnalyzer.VideoSink",
         "name": "videoSink",
-        "videoName": "sample-http-extension2",
+        "videoName": "sample-http-extension",
         "inputs": [
           {
             "nodeName": "rtspSource",

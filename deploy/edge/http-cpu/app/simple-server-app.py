@@ -64,8 +64,8 @@ def score():
                             "box": {
                                 "l": xmin,
                                 "t": ymin,
-                                "w": ymax-ymin,
-                                "h": xmax-xmin
+                                "w": xmax-xmin,
+                                "h": ymax-ymin
                             }
                         }
                     }

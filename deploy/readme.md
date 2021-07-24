@@ -1,6 +1,6 @@
 # Edge Deployment, Redeployment and Reset
 
-Use this information and folder if you wish to redeploy the edge modules of this solution or reset the edge modules to what comes with the Percept DK.
+Use this information and folder if you wish to redeploy the edge modules of this solution or reset the edge modules to what comes with the Percept DK (mainly for degugging).
 
 ## Contents of the `arm_templates` folder
 
@@ -20,7 +20,7 @@ The "Deploy to Azure" button uses these files under the hood.  It can be useful 
 
 - [Original source](https://github.com/Azure/video-analyzer/tree/main/setup)
 
-If needing to deactivate the live pipeline, log in with the Azure CLI on the command line and run:
+If wishing to deactivate the live pipeline with the Azure CLI, log in with the Azure CLI on the command line and run:
 
 ```
 az iot hub invoke-module-method \

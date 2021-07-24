@@ -90,7 +90,7 @@
           },
           "simpleserver": {
             "settings": {
-              "image": "$CONTAINER_REGISTRY_USERNAME_myacr.azurecr.io/avaextension-eye-server:v1.10",
+              "image": "$CONTAINER_REGISTRY_USERNAME_myacr.azurecr.io/avaextension-eye-server:v1.11",
               "createOptions": {
               }
             },
@@ -99,6 +99,76 @@
               "status": "running",
               "restartPolicy": "always"
           },
+            "WebStreamModule": {
+                "settings": {
+                    "image": "mcr.microsoft.com/azureedgedevices/webstreammodule:preload-devkit",
+                    "createOptions": {
+                        "ExposedPorts": {
+                            "2999/tcp":{},
+                            "3000/tcp":{}, 
+                            "3002/tcp":{},
+                            "3004/tcp":{},
+                            "3006/tcp":{},
+                            "3008/tcp":{},
+                            "3010/tcp":{}
+                        },
+                        "HostConfig":{
+                            "PortBindings":{
+                                "2999/tcp":[
+                                        {
+                                            "HostPort": 2999
+                                        }
+                                    ],
+                                    "3000/tcp":[
+                                        {
+                                            "HostPort": 3000
+                                        }
+                                    ],
+                                    "3002/tcp":[
+                                        {
+                                            "HostPort": 3002
+                                        }
+                                    ],
+                                    "3004/tcp":[
+                                        {
+                                            "HostPort": 3004
+                                        }
+                                    ],
+                                    "3006/tcp":[
+                                        {
+                                            "HostPort": 3006
+                                        }
+                                    ],
+                                    "3008/tcp":[
+                                        {
+                                            "HostPort": 3008
+                                        }
+                                    ],
+                                    "3010/tcp":[
+                                        {
+                                            "HostPort": 3010
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                },
+                "type": "docker",
+                "version": "1.0",
+                "env": {
+                    "RTSP_IP": {
+                        "value": "azureeyemodule"
+                    },
+                    "RTSP_PORT": {
+                        "value": "8554"
+                    },
+                    "RTSP_PATH": {
+                        "value": "result"
+                    }
+                },
+                "status": "running",
+                "restartPolicy": "always"
+            },
           "azureeyemodule": {
               "settings": {
                   "image": "mcr.microsoft.com/azureedgedevices/azureeyemodule:2106-2",
