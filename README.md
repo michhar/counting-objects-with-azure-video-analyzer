@@ -1,16 +1,18 @@
 # Object Counting on the Percept DK with Azure Video Analyzer
 
-The goal of this project is to be able to recognize objects found on the edge with the Percept DK device and Vision SoM camera using Azure Video Anlyzer (AVA) as the platform.  Additionally, video is saved to the cloud with AVA when invoking methods that directly communicate with the edge device for continuous recording (default when using the "Deploy to Azure" button below).
+The goal of this project is to be able to recognize objects found on the edge with the Percept DK device and Vision SoM camera using Azure Video Anlyzer (AVA) as the platform.  Additionally, video is saved to the cloud with AVA when invoking methods that directly communicate with the edge device for continuous recording (default when using the "Deploy to Azure" button below).  By default it sets up for people detection with an open source, prebuilt ML model from [this zoo](https://github.com/microsoft/azure-percept-advanced-development#model-urls).  The detections may be seen, at this time, flowing into the IoT Hub messages from the edge.
 
-This repo is under rapid iterations and will be updating often.  Currently it offers:
+This repo is under rapid iterations, is not production ready and will be updating often.  Currently it offers:
 
 * Process to deploy Azure Video Analyzer (and Azure resources), plus edge modules, to the Percept DK and initiate cloud recording
 * [Optional] Python console app in the `ava_app` folder (for debugging) to be run on dev/local machine that starts and stops video recording to the cloud
 * [Optional] Deployment manifests in the `deploy/edge` folder to reset the Percept DK to original modules or redeploy the AVA pipeline (for debugging)
 
-Work in progress:
+Future work:
 
-* Cloud web app/dashboard to view video and object counts (plus control AVA)
+- [ ] Default deployment working with AVA widgets for metadata overlay in the Azure Portal
+- [ ] Improve quality of video sent to the cloud from the Percept DK (currently somewhat degraded when there is movement)
+- [ ] A final dashboard making use of the AVA widgets for metadata (bounding box) overlay
 
 ## Prerequisites
 
