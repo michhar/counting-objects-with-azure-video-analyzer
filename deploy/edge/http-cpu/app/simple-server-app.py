@@ -1,8 +1,8 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
-import base64
 import json
 import logging
+from datetime import datetime, timezone
 
 from flask import Flask, Response, Request, abort, request
 from azure.iot.device import IoTHubModuleClient
@@ -23,29 +23,31 @@ try:
     # The client object is used to interact with your Azure IoT hub.
     logging.info("Creating iot hub module client from edge env")
     module_client = IoTHubModuleClient.create_from_edge_environment()
-    # connect the client.
+    # connect the client
     logging.info("Connecting to iot hub module client")
     module_client.connect()
 except Exception as err:
-    PrintGetExceptionDetails()
+    # PrintGetExceptionDetails()
     logging.error("Execption in creating and connecting to iot hub module client: {}".format(err))
 
-# / routes to the default function which returns 'Hello World'
+# / routes to the default function
 @app.route('/', methods=['GET'])
 def default_page():
+    """Default route/page"""
     return Response(response='Hello from simple server!', status=200)
 
 # /score routes to scoring function 
-# This function returns a JSON object with inference duration and detected objects
 @app.route("/score", methods=['POST'])
 def score():
+    """This function returns a JSON object with inference duration and detected objects"""
+    # Current date and time
+    now = datetime.now()
+    utc_now = datetime.now(timezone.utc).timestamp()
     try:
         input_message = module_client.receive_message_on_input("input1")  # blocking call
         if input_message.data:
-            print("the data in the message received on azureeyemodule was ")
-            print(input_message.data)
-            print("custom properties are")
-            print(input_message.custom_properties)
+            print("{} The data in the message received on azureeyemodule was {}".format(now, input_message.data))
+            print("{} Custom properties are {}".format(now, input_message.custom_properties))
 
             # Gather inferences from azureeyemodule to correspond with when AVA is sending data
             # NB:  AVA is still sending images, but we are ignoring them
@@ -73,24 +75,28 @@ def score():
 
             if len(detected_objects) > 0:
                 respBody = {
+                    "timestamp" : utc_now,
                     "inferences" : detected_objects
                 }
                 respBody = json.dumps(respBody)
                 return Response(respBody, status=200, mimetype='application/json')
             else:
                 logging.info("No detections from azureeyemodule")
-                return Response(json.dumps({'No detections from azureyemodule'}),
-                                status=204, 
-                                mimetype='application/json')                
+                respBody = {
+                    "timestamp" : utc_now,
+                    "inferences" : []
+                }
+                respBody = json.dumps(respBody)
+                return Response(respBody, status=200, mimetype='application/json')               
         else:
             logging.info("No data in message from azureeyemodule")
             return Response(json.dumps({'No data from azureyemodule'}),
                             status=204, 
                             mimetype='application/json')
     except Exception as err:
-        PrintGetExceptionDetails()
+        # PrintGetExceptionDetails()
         logging.error("Exception in score function.")
-        return Response("Execption in score function: {}".format(err), status=500)
+        return Response(json.dumps({"Execption in score function: {}".format(err)}), status=500)
 
 # /score-debug routes to score_debug
 # This function scores the image and stores an annotated image for debugging purposes

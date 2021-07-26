@@ -1,12 +1,9 @@
 
+# Updating the HTTP Simple Server for Custom Usage
+
 The following instructions will enable you to build a Docker container with a mock https server using [nginx](https://www.nginx.com/), [gunicorn](https://gunicorn.org/), [flask](https://github.com/pallets/flask), [runit](http://smarden.org/runit/), and [pillow](https://pillow.readthedocs.io/en/stable/index.html).
 
 Note: References to third-party software in this repo are for informational and convenience purposes only. Microsoft does not endorse nor provide rights for the third-party software. For more information on third-party software please see the links provided above.
-
-## Contributions needed
-
-* Improved logging
-* Graceful shutdown of nginx and gunicorn
 
 ## Prerequisites
 

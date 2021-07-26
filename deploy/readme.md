@@ -2,6 +2,8 @@
 
 Use this information and folder if you wish to redeploy the edge modules of this solution or reset the edge modules to what comes with the Percept DK (mainly for degugging).
 
+You may also change the ML model used to another - either [prebuilt (object detectors only)](https://github.com/microsoft/azure-percept-advanced-development#model-urls) or [custom built](https://github.com/microsoft/azure-percept-advanced-development/tree/main/machine-learning-notebooks/transfer-learning-custom-azureml).
+
 ## Contents of the `arm_templates` folder
 
 The "Deploy to Azure" button uses these files under the hood.  It can be useful to understand what is happening when one clicks the button.
@@ -53,9 +55,45 @@ The contents of this folder are for debugging.
 | deployment.ava.percept.template.json | Deploy or redeploy the edge modules of this AVA solution |
 | deployment.reset.percept.template.json | Reset the modules on the Percept DK to original "factory" experience; often useful to perform before you wish to redeploy the AVA solution modules |
 
+If you wish to try a different ML model, either [prebuilt - object detectors only](https://github.com/microsoft/azure-percept-advanced-development#model-urls) or [custom built](https://github.com/microsoft/azure-percept-advanced-development/tree/main/machine-learning-notebooks/transfer-learning-custom-azureml)), change the `ModelZipUrl` in `deployment.ava.percept.template.json` as shown below.
+
+```json
+ "azureeyemodule": {
+        "properties.desired": {
+            "Logging": true,
+            "ModelZipUrl": "<change this url to a different zipped model file url>",
+            "RawStream": true,
+            "ResultStream": true,
+            "Running": true,
+            "TelemetryInterval": 10
+        }
+    }
+```
+
 ### Setup for edge
 
-Create a file named `.env` in this folder based on `envtemplate`. Provide values for all variables.
+Note: if using a private ACR for the http simpleserver, look at `deployment.ava.percept.myacr.template.json` and fill in the following with the appropriate values for your ACR.
+
+In the manifest (for private ACR):
+
+```json
+            "registryCredentials": {
+              "$CONTAINER_REGISTRY_USERNAME_myacr": {
+                "username": "$CONTAINER_REGISTRY_USERNAME_myacr",
+                "password": "$CONTAINER_REGISTRY_PASSWORD_myacr",
+                "address": "$CONTAINER_REGISTRY_USERNAME_myacr.azurecr.io"
+              }
+            }
+```
+
+In the `.env` you created (for private ACR):
+
+```
+CONTAINER_REGISTRY_USERNAME_myacr=<optional>
+CONTAINER_REGISTRY_PASSWORD_myacr=<optional>
+```
+
+Then use `deployment.ava.percept.myacr.template.json` to deploy AVA solution.
 
 ### Using VSCode to deploy edge modules
 

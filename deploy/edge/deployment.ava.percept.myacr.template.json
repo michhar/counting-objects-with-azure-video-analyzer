@@ -10,6 +10,11 @@
             "minDockerVersion": "v1.25",
             "loggingOptions": "",
             "registryCredentials": {
+              "$CONTAINER_REGISTRY_USERNAME_myacr": {
+                "username": "$CONTAINER_REGISTRY_USERNAME_myacr",
+                "password": "$CONTAINER_REGISTRY_PASSWORD_myacr",
+                "address": "$CONTAINER_REGISTRY_USERNAME_myacr.azurecr.io"
+              }
             }
           }
         },
@@ -85,7 +90,7 @@
           },
           "simpleserver": {
             "settings": {
-              "image": "rheartpython/avaextension-simple-http-server:v1.0",
+              "image": "$CONTAINER_REGISTRY_USERNAME_myacr.azurecr.io/avaextension-eye-server:v1.0",
               "createOptions": {
               }
             },
@@ -151,7 +156,7 @@
         "ProvisioningToken": "$AVA_PROVISIONING_TOKEN",
         "diagnosticsEventsOutputName": "diagnostics",
         "operationalEventsOutputName": "operational",
-        "logLevel": "Verbose",
+        "logLevel": "information",
         "logCategories": "application, events",
         "debugLogsDirectory": "/tmp",
         "allowUnsecuredEndpoints": true,

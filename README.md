@@ -38,6 +38,8 @@ After the script finishes you will have the following Azure resources in a new R
 
 > **IMPORTANT**:  To be able to redeploy the AVA modules, you should keep the AVA Provisioning Token for your records (this can not be found after redeploying with alternative deployment manifests).  After deployment, go to the specified IoT Hub (probably in a different resource group) --> IoT Edge --> your device name --> avaedge Module --> Module Identity Twin --> in "properties" --> "desired" --> copy and save "ProvisioningToken".
 
+View the videos by going to the [Azure Portal](https://portal.azure.com) --> select your AVA resource group --> select Video Analyzer --> go to Videos --> select "sample-http-extension" and wait for the live stream to appear.  It may take 1-2 minutes for a live video stream to appear in the Azure Portal under AVA Videos after the deployment is complete.
+
 ## Optional steps (WIP)
 
 After deploying the resources in Azure as done above (by using the "Deploy to Azure" button), refer to the next steps as follows.
@@ -55,7 +57,7 @@ pip install -r requirements.txt
 
 ### Edge reset or redeploy
 
-And if needing to deploy or redeploy from a manifest or get more information on the deployment process, go to the following folder.
+For debugging and understanding futher, to deploy or redeploy from a manifest or get more information on the deployment process, go to the following folder.
 * [Edge Deployment, Redeployment and Reset](deploy/)
 
 ## Data
