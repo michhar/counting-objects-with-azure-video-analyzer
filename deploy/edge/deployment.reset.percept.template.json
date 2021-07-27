@@ -100,7 +100,7 @@
                     },
                     "azureeyemodule": {
                         "settings": {
-                            "image": "mcr.microsoft.com/azureedgedevices/azureeyemodule:2104-2",
+                            "image": "mcr.microsoft.com/azureedgedevices/azureeyemodule:2106-2",
                             "createOptions": {
                                 "ExposedPorts":{
                                     "8554/udp":{},

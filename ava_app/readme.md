@@ -39,6 +39,17 @@ Detailed instructions for running the sample can be found in the tutorials for A
 * Right click on src/edge/config /deployment.amd64.json and select **"Create Deployment for single device"** and select the name of your edge device. This will trigger the deployment of the IoT Edge modules to your Edge device. You can view the status of the deployment in the Azure IoT Hub extension (expand 'Devices' and then 'Modules' under your IoT Edge device).
 * Right click on your edge device in Azure IoT Hub extension and select **"Start Monitoring Built-in Event Endpoint"**.
 * Ensure you have installed python dependencies from `requirements.txt` at the base of this repo. This can be done by running `pip install -r requirements.txt` at the base of the repo.
+* Check your `topology.json` file used in this app to ensure it has correct values.  If you already have a video in the Azure Portal, you may wish to increment the name in the `topology.json` in the sinks section (under `videoName`).
+
+```json
+{
+ "@type": "#Microsoft.VideoAnalyzer.VideoSink",
+        "name": "videoSink",
+        "videoName": "sample-http-extension-<increment here or change name>",
+        ...
+}
+```
+
 * To run, activate your conda environment if you haven't done so already, go to the `ava_app` folder on the command line and run the `main.py` as follows.
 
 From the base of the repo:
@@ -58,7 +69,24 @@ python main.py --action stop
 
 ## Troubleshooting
 
-See the [Azure Video Analyzer Troubleshooting page](https://docs.microsoft.com/en-us/azure/azure-video-analyzer/video-analyzer-docs/troubleshoot).
+- See the [Azure Video Analyzer Troubleshooting page](https://docs.microsoft.com/en-us/azure/azure-video-analyzer/video-analyzer-docs/troubleshoot).
+
+- When you see either of the following messages, this generally means the RTSP stream has stop coming in to `avaedge` module (this could be due to `azureeyemodule` crashing for instance).
+
+```json
+[IoTHubMonitor] [7:53:20 AM] Message received from [percept-ava/avaedge]:
+{
+  "code": "connectionRefused",
+  "target": "rtsp"
+}
+[IoTHubMonitor] [7:53:22 AM] Message received from [percept-ava/avaedge]:
+{
+  "code": "nameResolutionError",
+  "target": "rtsp"
+}
+```
+
+ - When a module crashes, the Video in the Azure Portal will stop Recording, even though it may indicate it is still Recording.  Please give the device a few minutes, and try running the Python script above with the action of `stop` again.  If this does not work after a few minutes, a hard reboot of the device can fix this temporarily so you may `stop` AVA with the Python script above after the device is up and running again.
 
 ## Credits and References
 

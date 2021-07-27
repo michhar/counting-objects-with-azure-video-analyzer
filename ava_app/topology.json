@@ -78,8 +78,8 @@
         "image": {
           "scale": {
             "mode": "pad",
-            "width": "416",
-            "height": "416"
+            "width": "10",
+            "height": "10"
           },
           "format": {
             "@type": "#Microsoft.VideoAnalyzer.ImageFormatBmp"
@@ -99,7 +99,7 @@
         ],
         "samplingOptions": {
           "skipSamplesWithoutAnnotation": "false",
-          "maximumSamplesPerSecond": "5"
+          "maximumSamplesPerSecond": "10"
         }
       }
     ],

@@ -44,9 +44,11 @@ View the videos by going to the [Azure Portal](https://portal.azure.com) --> sel
 
 ## Optional steps (WIP)
 
-After deploying the resources in Azure as done above (by using the "Deploy to Azure" button), refer to the next steps as follows.
+After deploying the resources in Azure as done above (by using the "Deploy to Azure" button), refer to the next steps as follows (mainly for debuggin and advanced features).
 
 ### Python setup
+
+This is to manually control the AVA direct methods (to stop and start recording - CVR).
 
 1. If using Anaconda Python (recommended) [setup a conda environment](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html), otherwise, [use `venv`](https://docs.python.org/3/library/venv.html) to create a nuclear environment for this solution.
 2. Install the Python dependencies as follows.
@@ -59,15 +61,34 @@ pip install -r requirements.txt
 
 ### Edge reset or redeploy
 
-For debugging and understanding futher, to deploy or redeploy from a manifest or get more information on the deployment process, go to the following folder.
+For debugging and understanding futher, to deploy or redeploy from a manifest, get advanced features or get more information on the deployment process, go to the following folder.
 * [Edge Deployment, Redeployment and Reset](deploy/)
 
 ## Data
 
-Example output from Percept DK (coming soon).
+Example output from Percept DK through the AVA edge module to IoT Hub:
 
 ```json
-
+{
+  "timestamp": 146434442279126,
+  "inferences": [
+    {
+      "type": "entity",
+      "entity": {
+        "tag": {
+          "value": "person",
+          "confidence": 0.664062
+        },
+        "box": {
+          "l": 0.244,
+          "t": 0.321,
+          "w": 0.676,
+          "h": 0.343
+        }
+      }
+    }
+  ]
+}
 ```
 
 ## Troubleshooting
@@ -84,7 +105,7 @@ sudo chown -R 1010:1010 /var/lib/videoanalyzer/
 sudo systemctl start iotedge
 ```
 
-> Note:  for newer iotedge daemons you may need to replace `iotedge` with `aziot-edged`.
+> Note:  for newer iotedge daemons you may need to replace `iotedge` command with `aziot-edged`.
 
 ## Credits and references
 
@@ -111,4 +132,4 @@ The Vision SoM on the Percept DK returns json in the format:
 }
 ```
 
-Here, with the simple http server, we sync it in the correct format for AVA.
+Here, with the simple http server (`simpleserver` module), an advanced feature, we sync it in the correct format for AVA.

@@ -96,7 +96,7 @@
               "Logging": true,
               "ModelZipUrl": "https://aedsamples.blob.core.windows.net/vision/aeddevkitnew/person-detection-retail-0013.zip",
               "RawStream": true,
-              "ResultStream": true,
+              "ResultStream": false,
               "Running": true,
               "TelemetryInterval": 10
           }
