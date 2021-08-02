@@ -9,7 +9,10 @@ This directory contains a Python sample app that would enable you to invoke AVA 
 | File             | Description                                                   |
 |-------------------------|---------------------------------------------------------------|
 | `readme.md`             | This readme file                                              |
-| `operations_all.json`   | JSON file defining the sequence of operations to execute upon |
+| `operations_start_cvr.json`   | JSON file defining the sequence of operations to execute upon for starting CVR |
+| `operations_delete_cvr.json`   | JSON file defining the sequence of operations to execute upon for stopping CVR |
+| `operations_start_http.json`   | JSON file defining the sequence of operations to execute upon for starting http (`simpleserver` module must be running) |
+| `operations_delete_http.json`   | JSON file defining the sequence of operations to execute upon for stopping http (`simpleserver` module must be running) |
 | `main.py`               | The main program file                                         |
 | `requirements.txt`      | List of all dependent Python libraries                        |
 
@@ -50,21 +53,38 @@ Detailed instructions for running the sample can be found in the tutorials for A
 }
 ```
 
-* To run, activate your conda environment if you haven't done so already, go to the `ava_app` folder on the command line and run the `main.py` as follows.
+* To run CVR only, activate your conda environment if you haven't done so already, go to the `ava_app` folder on the command line and run the `main.py` as follows.
 
 From the base of the repo:
 ```
 cd ava_deploy
 conda activate <name of your conda environment>
-python main.py --action start
+```
+
+To activate the live AVA pipeline for the CVR only setup, perform the following.
+
+```
+python main.py --action start --type cvr
+```
+
+To activate the live AVA pipeline for the http `simpleserver` setup, perform the following.
+
+```
+python main.py --action start --type http
 ```
 
 ## Deactivate and Delete
 
-To deactivate a live AVA pipeline run the following command.  This is nice for debugging purposes and you may always reactivate as shown above.
+To deactivate a live AVA pipeline for CVR only run the following command.  This is nice for debugging purposes and you may always reactivate as shown above.
 
 ```
-python main.py --action stop
+python main.py --action stop --type cvr
+```
+
+To deactivate the live AVA pipeline for the http `simpleserver` setup, perform the following.
+
+```
+python main.py --action stop --type http
 ```
 
 ## Troubleshooting

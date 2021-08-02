@@ -80,15 +80,21 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--action', default='start',
                         help='--action must be "start" or "stop" to start AVA or stop AVA, respectively.')
+    parser.add_argument('--type', default='cvr',
+                        help='--type must be "cvr" or "http" to use the cvr or http pipelines and topologies, respectively.')
 
     args = parser.parse_args()
     
-    if args.action == 'start':
+    if args.action == 'start' and args.type == 'http':
         operations_data_json = pathlib.Path('operations_start_http.json').read_text()
-    elif args.action == 'stop':
+    elif args.action == 'stop' and args.type == 'https':
         operations_data_json = pathlib.Path('operations_delete_http.json').read_text()
+    elif args.action == 'start' and args.type == 'cvr':
+        operations_data_json = pathlib.Path('operations_start_cvr.json').read_text()
+    elif args.action == 'stop' and args.type == 'cvr':
+        operations_data_json = pathlib.Path('operations_delete_cvr.json').read_text()
     else:
-        print('action value not recognized.  --action must be "start" or "stop" to start AVA or stop AVA, respectively.')
+        print('action and/or type value not recognized. --action must be "start" or "stop" to start AVA or stop AVA, respectively and --type must be "cvr" or "http"')
         exit(-1)
 
     operations_data = json.loads(operations_data_json)

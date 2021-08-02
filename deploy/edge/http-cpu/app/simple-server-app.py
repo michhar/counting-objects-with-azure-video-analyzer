@@ -19,6 +19,8 @@ def init_logging():
 app = Flask(__name__)
 init_logging()
 
+# Gives ability to recieve and send iot edge hub messages to/from
+# different modules on the edge.
 try:
     # The client object is used to interact with your Azure IoT hub.
     logging.info("Creating iot hub module client from edge env")
@@ -40,7 +42,7 @@ def default_page():
 @app.route("/score", methods=['POST'])
 def score():
     """This function returns a JSON object with inference duration and detected objects"""
-    # Current date and time
+    # Current date and time - might be overwritten by avaedge timestamp
     now = datetime.now()
     utc_now = datetime.now(timezone.utc).timestamp()
     try:
